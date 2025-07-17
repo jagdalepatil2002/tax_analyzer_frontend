@@ -1,9 +1,8 @@
-// --- Final Corrected Frontend Application (App.js) ---
+// --- Part 2: Final Frontend Application (App.js) ---
+// This file should be in your GitHub repository connected to Vercel.
 
 import React, { useState } from 'react';
 
-// FIX: Replaced process.env with the direct URL to your deployed backend.
-// This resolves the "process is not defined" error in the browser.
 const API_BASE_URL = 'https://tax-analyzer-backend.onrender.com'; 
 
 const api = {
@@ -34,38 +33,19 @@ const api = {
   },
 };
 
-// --- Data for Country Codes ---
-const countryCodes = [
-    { name: 'United States', code: 'US', dial_code: '+1' },
-    { name: 'United Kingdom', code: 'GB', dial_code: '+44' },
-    { name: 'Germany', code: 'DE', dial_code: '+49' },
-    { name: 'Australia', code: 'AU', dial_code: '+61' },
-    { name: 'Japan', code: 'JP', dial_code: '+81' },
-    { name: 'India', code: 'IN', dial_code: '+91' },
-].sort((a, b) => {
-    const numA = parseInt(a.dial_code.substring(1));
-    const numB = parseInt(b.dial_code.substring(1));
-    return numA - numB;
-});
-
-
 // --- Helper Components & Icons ---
-const FileHeart = (props) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M4 22h14a2 2 0 0 0 2-2V7.5L14.5 2H6a2 2 0 0 0-2 2v4" />
-    <path d="M14 2v6h6" />
-    <path d="M10.3 12.3c.8-1 2-1.5 3.2-1.5 2.2 0 4 1.8 4 4 0 2.5-3.4 4.9-5.2 6.2a.5.5 0 0 1-.6 0C10 19.4 6 17 6 14.5c0-2.2 1.8-4 4-4 .8 0 1.5.3 2.1.8" />
-  </svg>
-);
-const LoadingSpinner = () => (
-    <div className="flex flex-col items-center justify-center space-y-4">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-purple-600"></div>
-        <p className="text-purple-700 font-semibold">Analyzing your notice...</p>
-    </div>
-);
+const FileHeart = (props) => ( <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 22h14a2 2 0 0 0 2-2V7.5L14.5 2H6a2 2 0 0 0-2 2v4" /><path d="M14 2v6h6" /><path d="M10.3 12.3c.8-1 2-1.5 3.2-1.5 2.2 0 4 1.8 4 4 0 2.5-3.4 4.9-5.2 6.2a.5.5 0 0 1-.6 0C10 19.4 6 17 6 14.5c0-2.2 1.8-4 4-4 .8 0 1.5.3 2.1.8" /></svg> );
+const LoadingSpinner = () => ( <div className="flex flex-col items-center justify-center space-y-4"><div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-purple-600"></div><p className="text-purple-700 font-semibold">Analyzing your notice...</p></div> );
 
 // --- Screen Components ---
-const AuthScreen = ({ isLogin, handleLogin, handleRegister, error, firstName, setFirstName, lastName, setLastName, email, setEmail, password, setPassword, confirmPassword, setConfirmPassword, dob, setDob, mobileNumber, setMobileNumber, countryCode, setCountryCode, setView, clearFormFields}) => (
+const AuthScreen = ({ isLogin, handleLogin, handleRegister, error, firstName, setFirstName, lastName, setLastName, email, setEmail, password, setPassword, confirmPassword, setConfirmPassword, dob, setDob, mobileNumber, setMobileNumber, countryCode, setCountryCode, setView, clearFormFields}) => {
+    const countryCodes = [
+        { name: 'United States', code: 'US', dial_code: '+1' },
+        { name: 'India', code: 'IN', dial_code: '+91' },
+        { name: 'United Kingdom', code: 'GB', dial_code: '+44' },
+    ].sort((a,b) => a.name.localeCompare(b.name));
+
+    return (
     <div className="bg-white p-8 sm:p-10 rounded-2xl shadow-lg border border-gray-100 max-w-md w-full" style={{ backgroundColor: '#F9F5FF' }}>
         <h2 className="text-3xl font-bold text-center text-purple-800 mb-1">{isLogin ? "Hello There!" : "Create Your Account"}</h2>
         <p className="text-center text-purple-600 mb-8">{isLogin ? "Let's get you signed in." : "Join us to simplify your tax notices."}</p>
@@ -79,9 +59,7 @@ const AuthScreen = ({ isLogin, handleLogin, handleRegister, error, firstName, se
                     <input type="text" placeholder="Date of Birth" onFocus={(e) => e.target.type='date'} onBlur={(e) => { if(!e.target.value) e.target.type='text'}} value={dob} onChange={e => setDob(e.target.value)} className="w-full px-4 py-3 bg-white border-2 border-purple-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700" required />
                     <div className="flex">
                         <select value={countryCode} onChange={e => setCountryCode(e.target.value)} className="bg-gray-50 border-2 border-r-0 border-purple-200 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-purple-500 px-2 text-gray-700">
-                            {countryCodes.map(country => (
-                                <option key={country.code} value={country.dial_code}>{country.code} ({country.dial_code})</option>
-                            ))}
+                            {countryCodes.map(country => ( <option key={country.code} value={country.dial_code}>{country.name} ({country.dial_code})</option> ))}
                         </select>
                         <input type="tel" placeholder="Mobile Number" value={mobileNumber} onChange={e => setMobileNumber(e.target.value)} className="w-full px-4 py-3 bg-white border-2 border-purple-200 rounded-r-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required />
                     </div>
@@ -98,7 +76,8 @@ const AuthScreen = ({ isLogin, handleLogin, handleRegister, error, firstName, se
             <button onClick={() => { setView(isLogin ? 'register' : 'login'); clearFormFields(); }} className="font-semibold text-purple-700 hover:underline ml-1">{isLogin ? "Join us!" : "Sign in"}</button>
         </p>
     </div>
-);
+    )
+};
 const UploadScreen = ({ handleLogout, handleFileUpload }) => {
     const handleDragOver = (e) => e.preventDefault();
     const handleDrop = (e) => { e.preventDefault(); if (e.dataTransfer.files.length > 0) handleFileUpload(e.dataTransfer.files[0]); };
@@ -117,21 +96,102 @@ const UploadScreen = ({ handleLogout, handleFileUpload }) => {
         </div>
     );
 };
+
+// FIX: Rebuilt SummaryScreen to render the final detailed format.
 const SummaryScreen = ({ summaryData, resetApp }) => (
     <div className="bg-white p-8 sm:p-10 rounded-2xl shadow-lg border border-gray-100 max-w-3xl w-full" style={{ backgroundColor: '#F9F5FF' }}>
-        <h2 className="text-3xl font-bold text-purple-800 mb-6 text-center">Your Notice Summary</h2>
-        <div className="bg-purple-50/50 p-6 rounded-xl border-2 border-purple-100 mb-6">
-             <h3 className="font-bold text-purple-900">Notice For:</h3> <p className="text-purple-700">{summaryData.noticeFor}</p>
+        <h1 className="text-3xl font-bold text-purple-800 mb-2 text-center">Summary of Your IRS Notice {summaryData.noticeType}</h1>
+        
+        <div className="bg-purple-50/50 p-6 rounded-xl border-2 border-purple-100 my-6">
+             <h3 className="font-bold text-purple-900">Notice For:</h3>
+             <p className="text-purple-700">{summaryData.noticeFor}</p>
              <p className="text-purple-700 whitespace-pre-wrap">{summaryData.address}</p>
              <p className="text-purple-700 mt-2"><span className="font-semibold">Social Security Number:</span> {summaryData.ssn}</p>
         </div>
-        <div className="grid md:grid-cols-2 gap-4 text-center bg-purple-600 text-white p-6 rounded-xl mb-6 shadow-md shadow-purple-200">
-            <div> <p className="text-sm uppercase font-bold tracking-wider opacity-80">Amount Due</p> <p className="text-3xl font-bold">{summaryData.amountDue}</p> </div>
-            <div> <p className="text-sm uppercase font-bold tracking-wider opacity-80">Pay By</p> <p className="text-3xl font-bold">{summaryData.payBy}</p> </div>
+
+        <div className="grid md:grid-cols-2 gap-4 text-center bg-purple-600 text-white p-6 rounded-xl mb-8 shadow-md shadow-purple-200">
+            <div>
+                <p className="text-sm uppercase font-bold tracking-wider opacity-80">Amount Due</p>
+                <p className="text-3xl font-bold">{summaryData.amountDue}</p>
+            </div>
+             <div>
+                <p className="text-sm uppercase font-bold tracking-wider opacity-80">Pay By</p>
+                <p className="text-3xl font-bold">{summaryData.payBy}</p>
+            </div>
         </div>
-        <div className="text-center mt-8"> <button onClick={resetApp} className="bg-purple-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-purple-700 transition-colors">Analyze Another Notice</button> </div>
+
+        <div className="space-y-8">
+            <div>
+                <h3 className="flex items-center text-xl font-bold text-purple-800 mb-3">Understanding Your Notice ({summaryData.noticeType})</h3>
+                <p className="text-purple-700 bg-purple-50 p-4 rounded-lg border border-purple-100">{summaryData.noticeMeaning}</p>
+            </div>
+
+            <div>
+                <h3 className="flex items-center text-xl font-bold text-purple-800 mb-3">
+                    <span className="text-2xl mr-3">❓</span> Why did I receive this?
+                </h3>
+                <p className="text-purple-700">{summaryData.whyText}</p>
+                <table className="min-w-full bg-white mt-4 rounded-lg border border-purple-200">
+                    <thead className="bg-purple-50">
+                        <tr>
+                            <th className="text-left py-2 px-4 font-semibold text-purple-800">Item</th>
+                            <th className="text-right py-2 px-4 font-semibold text-purple-800">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {summaryData.breakdown?.map((item, index) => (
+                            <tr key={index} className="border-t border-purple-200">
+                                <td className="py-2 px-4 text-purple-700">{item.item}</td>
+                                <td className="py-2 px-4 text-purple-700 text-right font-mono">{item.amount}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div>
+                <h3 className="flex items-center text-xl font-bold text-purple-800 mb-3">
+                    <span className="text-2xl mr-3">✔️</span> How should I fix this?
+                </h3>
+                <div className="bg-green-50 border border-green-200 p-4 rounded-lg mb-3">
+                     <p className="font-semibold text-green-800">If You Agree:</p>
+                     <p className="text-green-700 text-sm">{summaryData.fixSteps?.agree}</p>
+                </div>
+                 <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
+                     <p className="font-semibold text-yellow-800">If You Disagree:</p>
+                     <p className="text-yellow-700 text-sm">{summaryData.fixSteps?.disagree}</p>
+                </div>
+            </div>
+
+             <div>
+                <h3 className="flex items-center text-xl font-bold text-purple-800 mb-3">
+                    <span className="text-2xl mr-3">💳</span> How do I pay?
+                </h3>
+                 <ul className="space-y-2 text-purple-700 text-sm bg-purple-50 p-4 rounded-lg border border-purple-100">
+                    <li><strong>Online:</strong> <a href={`https://${summaryData.paymentOptions?.online}`} target="_blank" rel="noopener noreferrer" className="text-purple-600 font-semibold hover:underline">{summaryData.paymentOptions?.online}</a></li>
+                    <li><strong>By Mail:</strong> {summaryData.paymentOptions?.mail}</li>
+                    <li><strong>Payment Plan:</strong> <a href={`https://${summaryData.paymentOptions?.plan}`} target="_blank" rel="noopener noreferrer" className="text-purple-600 font-semibold hover:underline">{summaryData.paymentOptions?.plan}</a></li>
+                 </ul>
+            </div>
+             <div>
+                <h3 className="flex items-center text-xl font-bold text-purple-800 mb-3">
+                    <span className="text-2xl mr-3">🙋</span> I need more help!
+                </h3>
+                 <ul className="space-y-2 text-purple-700 text-sm bg-purple-50 p-4 rounded-lg border border-purple-100">
+                    <li>{summaryData.helpInfo?.contact}</li>
+                    <li>{summaryData.helpInfo?.advocate}</li>
+                 </ul>
+            </div>
+        </div>
+        
+        <div className="text-center mt-10">
+             <button onClick={resetApp} className="bg-purple-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-purple-700 transition-colors">
+                Analyze Another Notice
+             </button>
+        </div>
     </div>
 );
+
 
 // --- Main Application Component ---
 export default function App() {
@@ -144,14 +204,14 @@ export default function App() {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [dob, setDob] = useState('');
-    const [countryCode, setCountryCode] = useState('+1');
+    const [countryCode, setCountryCode] = useState('+91');
     const [mobileNumber, setMobileNumber] = useState('');
     const [summaryData, setSummaryData] = useState(null);
 
     const clearFormFields = () => {
         setEmail(''); setPassword(''); setConfirmPassword('');
         setFirstName(''); setLastName(''); setError('');
-        setDob(''); setMobileNumber(''); setCountryCode('+1');
+        setDob(''); setMobileNumber(''); setCountryCode('+91');
     };
 
     const handleRegister = async (e) => {
