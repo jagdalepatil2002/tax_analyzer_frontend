@@ -97,6 +97,7 @@ const UploadScreen = ({ handleLogout, handleFileUpload }) => {
     );
 };
 
+// FIX: Rebuilt SummaryScreen to render the final detailed format.
 const SummaryScreen = ({ summaryData, resetApp }) => (
     <div className="bg-white p-8 sm:p-10 rounded-2xl shadow-lg border border-gray-100 max-w-3xl w-full" style={{ backgroundColor: '#F9F5FF' }}>
         <h1 className="text-3xl font-bold text-purple-800 mb-2 text-center">Summary of Your IRS Notice {summaryData.noticeType}</h1>
