@@ -3,7 +3,7 @@
 
 import React, { useState } from 'react';
 
-const API_BASE_URL = 'https://tax-analyzer-backend.onrender.com'; 
+const API_BASE_URL = '[https://tax-analyzer-backend.onrender.com](https://tax-analyzer-backend.onrender.com)'; 
 
 const api = {
   async register(payload) {
@@ -34,7 +34,7 @@ const api = {
 };
 
 // --- Helper Components & Icons ---
-const FileHeart = (props) => ( <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 22h14a2 2 0 0 0 2-2V7.5L14.5 2H6a2 2 0 0 0-2 2v4" /><path d="M14 2v6h6" /><path d="M10.3 12.3c.8-1 2-1.5 3.2-1.5 2.2 0 4 1.8 4 4 0 2.5-3.4 4.9-5.2 6.2a.5.5 0 0 1-.6 0C10 19.4 6 17 6 14.5c0-2.2 1.8-4 4-4 .8 0 1.5.3 2.1.8" /></svg> );
+const FileHeart = (props) => ( <svg {...props} xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 22h14a2 2 0 0 0 2-2V7.5L14.5 2H6a2 2 0 0 0-2 2v4" /><path d="M14 2v6h6" /><path d="M10.3 12.3c.8-1 2-1.5 3.2-1.5 2.2 0 4 1.8 4 4 0 2.5-3.4 4.9-5.2 6.2a.5.5 0 0 1-.6 0C10 19.4 6 17 6 14.5c0-2.2 1.8-4 4-4 .8 0 1.5.3 2.1.8" /></svg> );
 const LoadingSpinner = () => ( <div className="flex flex-col items-center justify-center space-y-4"><div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-purple-600"></div><p className="text-purple-700 font-semibold">Analyzing your notice...</p></div> );
 
 // --- Screen Components ---
@@ -97,7 +97,6 @@ const UploadScreen = ({ handleLogout, handleFileUpload }) => {
     );
 };
 
-// FIX: Rebuilt SummaryScreen to render the final detailed format.
 const SummaryScreen = ({ summaryData, resetApp }) => (
     <div className="bg-white p-8 sm:p-10 rounded-2xl shadow-lg border border-gray-100 max-w-3xl w-full" style={{ backgroundColor: '#F9F5FF' }}>
         <h1 className="text-3xl font-bold text-purple-800 mb-2 text-center">Summary of Your IRS Notice {summaryData.noticeType}</h1>
