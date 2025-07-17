@@ -104,84 +104,97 @@ const SummaryScreen = ({ summaryData, resetApp }) => (
         
         <div className="bg-purple-50/50 p-6 rounded-xl border-2 border-purple-100 my-6">
              <h3 className="font-bold text-purple-900">Notice For:</h3>
-             <p className="text-purple-700">{summaryData.noticeFor}</p>
-             <p className="text-purple-700 whitespace-pre-wrap">{summaryData.address}</p>
-             <p className="text-purple-700 mt-2"><span className="font-semibold">Social Security Number:</span> {summaryData.ssn}</p>
+             <p className="text-purple-700">{summaryData.noticeFor || 'Not found'}</p>
+             <p className="text-purple-700 whitespace-pre-wrap">{summaryData.address || 'Not found'}</p>
+             <p className="text-purple-700 mt-2"><span className="font-semibold">Social Security Number:</span> {summaryData.ssn || 'Not found'}</p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-4 text-center bg-purple-600 text-white p-6 rounded-xl mb-8 shadow-md shadow-purple-200">
             <div>
                 <p className="text-sm uppercase font-bold tracking-wider opacity-80">Amount Due</p>
-                <p className="text-3xl font-bold">{summaryData.amountDue}</p>
+                <p className="text-3xl font-bold">{summaryData.amountDue || 'N/A'}</p>
             </div>
              <div>
                 <p className="text-sm uppercase font-bold tracking-wider opacity-80">Pay By</p>
-                <p className="text-3xl font-bold">{summaryData.payBy}</p>
+                <p className="text-3xl font-bold">{summaryData.payBy || 'N/A'}</p>
             </div>
         </div>
 
         <div className="space-y-8">
+            {summaryData.noticeMeaning && (
             <div>
                 <h3 className="flex items-center text-xl font-bold text-purple-800 mb-3">Understanding Your Notice ({summaryData.noticeType})</h3>
                 <p className="text-purple-700 bg-purple-50 p-4 rounded-lg border border-purple-100">{summaryData.noticeMeaning}</p>
             </div>
+            )}
 
+            {summaryData.whyText && (
             <div>
                 <h3 className="flex items-center text-xl font-bold text-purple-800 mb-3">
                     <span className="text-2xl mr-3">❓</span> Why did I receive this?
                 </h3>
                 <p className="text-purple-700">{summaryData.whyText}</p>
-                <table className="min-w-full bg-white mt-4 rounded-lg border border-purple-200">
-                    <thead className="bg-purple-50">
-                        <tr>
-                            <th className="text-left py-2 px-4 font-semibold text-purple-800">Item</th>
-                            <th className="text-right py-2 px-4 font-semibold text-purple-800">Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {summaryData.breakdown?.map((item, index) => (
-                            <tr key={index} className="border-t border-purple-200">
-                                <td className="py-2 px-4 text-purple-700">{item.item}</td>
-                                <td className="py-2 px-4 text-purple-700 text-right font-mono">{item.amount}</td>
+                {summaryData.breakdown && summaryData.breakdown.length > 0 && (
+                    <table className="min-w-full bg-white mt-4 rounded-lg border border-purple-200">
+                        <thead className="bg-purple-50">
+                            <tr>
+                                <th className="text-left py-2 px-4 font-semibold text-purple-800">Item</th>
+                                <th className="text-right py-2 px-4 font-semibold text-purple-800">Amount</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {summaryData.breakdown.map((item, index) => (
+                                <tr key={index} className="border-t border-purple-200">
+                                    <td className="py-2 px-4 text-purple-700">{item.item}</td>
+                                    <td className="py-2 px-4 text-purple-700 text-right font-mono">{item.amount}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
             </div>
+            )}
             
+            {summaryData.fixSteps && (
             <div>
                 <h3 className="flex items-center text-xl font-bold text-purple-800 mb-3">
                     <span className="text-2xl mr-3">✔️</span> How should I fix this?
                 </h3>
                 <div className="bg-green-50 border border-green-200 p-4 rounded-lg mb-3">
                      <p className="font-semibold text-green-800">If You Agree:</p>
-                     <p className="text-green-700 text-sm">{summaryData.fixSteps?.agree}</p>
+                     <p className="text-green-700 text-sm">{summaryData.fixSteps.agree || 'Information not available.'}</p>
                 </div>
                  <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
                      <p className="font-semibold text-yellow-800">If You Disagree:</p>
-                     <p className="text-yellow-700 text-sm">{summaryData.fixSteps?.disagree}</p>
+                     <p className="text-yellow-700 text-sm">{summaryData.fixSteps.disagree || 'Information not available.'}</p>
                 </div>
             </div>
+            )}
 
+             {summaryData.paymentOptions && (
              <div>
                 <h3 className="flex items-center text-xl font-bold text-purple-800 mb-3">
                     <span className="text-2xl mr-3">💳</span> How do I pay?
                 </h3>
                  <ul className="space-y-2 text-purple-700 text-sm bg-purple-50 p-4 rounded-lg border border-purple-100">
-                    <li><strong>Online:</strong> <a href={`https://${summaryData.paymentOptions?.online}`} target="_blank" rel="noopener noreferrer" className="text-purple-600 font-semibold hover:underline">{summaryData.paymentOptions?.online}</a></li>
-                    <li><strong>By Mail:</strong> {summaryData.paymentOptions?.mail}</li>
-                    <li><strong>Payment Plan:</strong> <a href={`https://${summaryData.paymentOptions?.plan}`} target="_blank" rel="noopener noreferrer" className="text-purple-600 font-semibold hover:underline">{summaryData.paymentOptions?.plan}</a></li>
+                    <li><strong>Online:</strong> <a href={`https://${summaryData.paymentOptions.online}`} target="_blank" rel="noopener noreferrer" className="text-purple-600 font-semibold hover:underline">{summaryData.paymentOptions.online || 'Not specified'}</a></li>
+                    <li><strong>By Mail:</strong> {summaryData.paymentOptions.mail || 'Not specified'}</li>
+                    <li><strong>Payment Plan:</strong> <a href={`https://${summaryData.paymentOptions.plan}`} target="_blank" rel="noopener noreferrer" className="text-purple-600 font-semibold hover:underline">{summaryData.paymentOptions.plan || 'Not specified'}</a></li>
                  </ul>
             </div>
+            )}
+
+             {summaryData.helpInfo && (
              <div>
                 <h3 className="flex items-center text-xl font-bold text-purple-800 mb-3">
                     <span className="text-2xl mr-3">🙋</span> I need more help!
                 </h3>
                  <ul className="space-y-2 text-purple-700 text-sm bg-purple-50 p-4 rounded-lg border border-purple-100">
-                    <li>{summaryData.helpInfo?.contact}</li>
-                    <li>{summaryData.helpInfo?.advocate}</li>
+                    <li>{summaryData.helpInfo.contact || 'Contact info not found.'}</li>
+                    <li>{summaryData.helpInfo.advocate || 'Advocate info not found.'}</li>
                  </ul>
             </div>
+            )}
         </div>
         
         <div className="text-center mt-10">
