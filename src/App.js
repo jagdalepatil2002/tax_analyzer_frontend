@@ -39,11 +39,89 @@ const LoadingSpinner = () => ( <div className="flex flex-col items-center justif
 
 // --- Screen Components ---
 const AuthScreen = ({ isLogin, handleLogin, handleRegister, error, firstName, setFirstName, lastName, setLastName, email, setEmail, password, setPassword, confirmPassword, setConfirmPassword, dob, setDob, mobileNumber, setMobileNumber, countryCode, setCountryCode, setView, clearFormFields}) => {
+    // FIX: Expanded country code list and sorted by dial code.
     const countryCodes = [
         { name: 'United States', code: 'US', dial_code: '+1' },
-        { name: 'India', code: 'IN', dial_code: '+91' },
+        { name: 'Canada', code: 'CA', dial_code: '+1' },
+        { name: 'Russia', code: 'RU', dial_code: '+7' },
+        { name: 'Egypt', code: 'EG', dial_code: '+20' },
+        { name: 'South Africa', code: 'ZA', dial_code: '+27' },
+        { name: 'Greece', code: 'GR', dial_code: '+30' },
+        { name: 'Netherlands', code: 'NL', dial_code: '+31' },
+        { name: 'Belgium', code: 'BE', dial_code: '+32' },
+        { name: 'France', code: 'FR', dial_code: '+33' },
+        { name: 'Spain', code: 'ES', dial_code: '+34' },
+        { name: 'Hungary', code: 'HU', dial_code: '+36' },
+        { name: 'Italy', code: 'IT', dial_code: '+39' },
+        { name: 'Romania', code: 'RO', dial_code: '+40' },
+        { name: 'Switzerland', code: 'CH', dial_code: '+41' },
+        { name: 'Austria', code: 'AT', dial_code: '+43' },
         { name: 'United Kingdom', code: 'GB', dial_code: '+44' },
-    ].sort((a,b) => a.name.localeCompare(b.name));
+        { name: 'Denmark', code: 'DK', dial_code: '+45' },
+        { name: 'Sweden', code: 'SE', dial_code: '+46' },
+        { name: 'Norway', code: 'NO', dial_code: '+47' },
+        { name: 'Poland', code: 'PL', dial_code: '+48' },
+        { name: 'Germany', code: 'DE', dial_code: '+49' },
+        { name: 'Peru', code: 'PE', dial_code: '+51' },
+        { name: 'Mexico', code: 'MX', dial_code: '+52' },
+        { name: 'Cuba', code: 'CU', dial_code: '+53' },
+        { name: 'Argentina', code: 'AR', dial_code: '+54' },
+        { name: 'Brazil', code: 'BR', dial_code: '+55' },
+        { name: 'Chile', code: 'CL', dial_code: '+56' },
+        { name: 'Colombia', code: 'CO', dial_code: '+57' },
+        { name: 'Venezuela', code: 'VE', dial_code: '+58' },
+        { name: 'Malaysia', code: 'MY', dial_code: '+60' },
+        { name: 'Australia', code: 'AU', dial_code: '+61' },
+        { name: 'Indonesia', code: 'ID', dial_code: '+62' },
+        { name: 'Philippines', code: 'PH', dial_code: '+63' },
+        { name: 'New Zealand', code: 'NZ', dial_code: '+64' },
+        { name: 'Singapore', code: 'SG', dial_code: '+65' },
+        { name: 'Thailand', code: 'TH', dial_code: '+66' },
+        { name: 'Japan', code: 'JP', dial_code: '+81' },
+        { name: 'South Korea', code: 'KR', dial_code: '+82' },
+        { name: 'Vietnam', code: 'VN', dial_code: '+84' },
+        { name: 'China', code: 'CN', dial_code: '+86' },
+        { name: 'Turkey', code: 'TR', dial_code: '+90' },
+        { name: 'India', code: 'IN', dial_code: '+91' },
+        { name: 'Pakistan', code: 'PK', dial_code: '+92' },
+        { name: 'Afghanistan', code: 'AF', dial_code: '+93' },
+        { name: 'Sri Lanka', code: 'LK', dial_code: '+94' },
+        { name: 'Myanmar', code: 'MM', dial_code: '+95' },
+        { name: 'Iran', code: 'IR', dial_code: '+98' },
+        { name: 'Morocco', code: 'MA', dial_code: '+212' },
+        { name: 'Algeria', code: 'DZ', dial_code: '+213' },
+        { name: 'Tunisia', code: 'TN', dial_code: '+216' },
+        { name: 'Libya', code: 'LY', dial_code: '+218' },
+        { name: 'Gambia', code: 'GM', dial_code: '+220' },
+        { name: 'Senegal', code: 'SN', dial_code: '+221' },
+        { name: 'Mali', code: 'ML', dial_code: '+223' },
+        { name: 'Ivory Coast', code: 'CI', dial_code: '+225' },
+        { name: 'Nigeria', code: 'NG', dial_code: '+234' },
+        { name: 'Cameroon', code: 'CM', dial_code: '+237' },
+        { name: 'Ethiopia', code: 'ET', dial_code: '+251' },
+        { name: 'Kenya', code: 'KE', dial_code: '+254' },
+        { name: 'Tanzania', code: 'TZ', dial_code: '+255' },
+        { name: 'Uganda', code: 'UG', dial_code: '+256' },
+        { name: 'Congo (DRC)', code: 'CD', dial_code: '+243' },
+        { name: 'Portugal', code: 'PT', dial_code: '+351' },
+        { name: 'Ireland', code: 'IE', dial_code: '+353' },
+        { name: 'Iceland', code: 'IS', dial_code: '+354' },
+        { name: 'Finland', code: 'FI', dial_code: '+358' },
+        { name: 'Bulgaria', code: 'BG', dial_code: '+359' },
+        { name: 'Lithuania', code: 'LT', dial_code: '+370' },
+        { name: 'Latvia', code: 'LV', dial_code: '+371' },
+        { name: 'Estonia', code: 'EE', dial_code: '+372' },
+        { name: 'Ukraine', code: 'UA', dial_code: '+380' },
+        { name: 'Serbia', code: 'RS', dial_code: '+381' },
+        { name: 'Croatia', code: 'HR', dial_code: '+385' },
+        { name: 'Slovenia', code: 'SI', dial_code: '+386' },
+        { name: 'Czech Republic', code: 'CZ', dial_code: '+420' },
+        { name: 'Slovakia', code: 'SK', dial_code: '+421' },
+        { name: 'United Arab Emirates', code: 'AE', dial_code: '+971' },
+        { name: 'Israel', code: 'IL', dial_code: '+972' },
+        { name: 'Saudi Arabia', code: 'SA', dial_code: '+966' },
+        { name: 'Qatar', code: 'QA', dial_code: '+974' },
+    ].sort((a, b) => parseInt(a.dial_code.substring(1)) - parseInt(b.dial_code.substring(1)));
 
     return (
     <div className="bg-white p-8 sm:p-10 rounded-2xl shadow-lg border border-gray-100 max-w-md w-full" style={{ backgroundColor: '#F9F5FF' }}>
@@ -58,7 +136,8 @@ const AuthScreen = ({ isLogin, handleLogin, handleRegister, error, firstName, se
                     </div>
                     <input type="text" placeholder="Date of Birth" onFocus={(e) => e.target.type='date'} onBlur={(e) => { if(!e.target.value) e.target.type='text'}} value={dob} onChange={e => setDob(e.target.value)} className="w-full px-4 py-3 bg-white border-2 border-purple-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700" required />
                     <div className="flex">
-                        <select value={countryCode} onChange={e => setCountryCode(e.target.value)} className="bg-gray-50 border-2 border-r-0 border-purple-200 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-purple-500 px-2 text-gray-700">
+                        {/* FIX: Adjusted styling for a more compact look. */}
+                        <select value={countryCode} onChange={e => setCountryCode(e.target.value)} className="flex-shrink-0 bg-gray-50 border-2 border-r-0 border-purple-200 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-purple-500 px-3 py-3 text-gray-700">
                             {countryCodes.map(country => ( <option key={country.code} value={country.dial_code}>{country.name} ({country.dial_code})</option> ))}
                         </select>
                         <input type="tel" placeholder="Mobile Number" value={mobileNumber} onChange={e => setMobileNumber(e.target.value)} className="w-full px-4 py-3 bg-white border-2 border-purple-200 rounded-r-lg focus:outline-none focus:ring-2 focus:ring-purple-500" required />
